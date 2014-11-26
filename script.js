@@ -10,7 +10,7 @@ var Natalshopping = Parse.Object.extend("Natalshopping");
 var query = new Parse.Query(Natalshopping);
 query.find({
 	success: function(films) {
-		alert("Successifully retrieved " + films.length + " scores.");
+		alert("Pegou com sucesso " + films.length + " filmes.");
 		var text = "", i;
 		for(i = 0; i < films.length; i++) {
 			text = text + films[i].get("name") + "      " + films[i].get("schedule") + 
