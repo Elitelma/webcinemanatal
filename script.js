@@ -8,16 +8,38 @@ var query = new Parse.Query(Natalshopping);
 query.find({
 	success: function(films) {
 		alert("Pegou com sucesso " + films.length + " filmes.");
-		var text = "", i;
+		var htmlFilmsList = document.getElementById("filmsList");
 		for(i = 0; i < films.length; i++) {
-			text = text + "<img src=" + films[i].get("image").url() + "/>" + 
-			films[i].get("name") + "      " + films[i].get("schedule") + 
-			"      " + films[i].get("shopping") + "      " + films[i].get("gender") + "      " +
-			films[i].get("censure") + "<br><br>";
+			createNewListElement(htmlFilmsList, films[i]);
 		}
-		document.write(text);
 	},
 	error: function(error) {
 		alert("Error: " + error.code + " " + error.message);
 	}
 }); 
+
+function createNewListElement(htmlFilmsList, film) {
+	var textNode;
+
+	var listItem = document.createElement("li");
+	htmlFilmsList.appendChild(listItem);
+
+	var filmImg = document.createElement("img");
+	filmImg.src = film.get("image").url();
+	listItem.appendChild(filmImg);
+
+	var filmName = document.createElement("h3");
+	textNode = document.createTextNode(film.get("name"));
+	filmName.appendChild(textNode);
+	listItem.appendChild(filmName);
+
+	var filmShopping = document.createElement("p");
+	textNode = document.createTextNode(film.get("shopping"));
+	filmShopping.appendChild(textNode);
+	listItem.appendChild(filmShopping);
+
+	var filmSchedule = document.createElement("p");
+	textNode = document.createTextNode(film.get("schedule"));
+	filmSchedule.appendChild(textNode);
+	listItem.appendChild(filmSchedule);
+}
