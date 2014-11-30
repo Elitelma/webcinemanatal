@@ -6,6 +6,7 @@ Parse.initialize(PARSE_ID, PARSE_CLIENTKEY);
 window.addEventListener("load", config, false);
 
 function config() {
+	var orderList = [];
 	downloadFilms();
 	//generateFilms(films);
 }
@@ -15,6 +16,7 @@ function downloadFilms() {
 	var query = new Parse.Query(Natalshopping);
 	query.find({
 		success: function(natalShopList) {
+			expandListThroughSchedules(natalShopList);
 			downloadNorteShopping(natalShopList);
 		},
 		error: function(error) {
@@ -28,8 +30,9 @@ function downloadNorteShopping(natalShopList) {
 	var query = new Parse.Query(Norteshopping);
 	query.find({
 		success: function(norteShopList) {
+			console.log("Fez o download de Norte Shopping corretamente. Tipo: " + typeof(norteShopList));
 			var filmsList = natalShopList.concat(norteShopList);
-			filmsList = expandListThroughSchedules(filmsList);
+			expandListThroughSchedules(filmsList);
 			downloadMidwayMall(filmsList);
 		},
 		error: function(error) {
@@ -43,7 +46,8 @@ function downloadMidwayMall(filmsList) {
 	var query = new Parse.Query(Midwaymall);
 	query.find({
 		success: function(midwayMallList) {
-			midwayMallList = expandListThroughSchedules(midwayMallList);
+			console.log("Fez o download de Midway Mall corretamente. Tipo: " + typeof(midwayMallList));
+			expandListThroughSchedules(midwayMallList);
 			filmsList = filmsList.concat(midwayMallList);
 			downloadPraiaShopping(filmsList);
 		},
@@ -58,10 +62,10 @@ function downloadPraiaShopping(filmsList) {
 	var query = new Parse.Query(Praiashopping);
 	query.find({
 		success: function(praiaShopList) {
+			console.log("Fez o download de Praiashopping corretamente. Tipo: " + typeof(praiaShopList));
 			praiaShopList = takeOutBrackets(praiaShopList);
-			praiaShopList = expandListThroughSchedules(praiaShopList);
+			expandListThroughSchedules(praiaShopList);
 			filmsList = filmsList.concat(praiaShopList);
-			filmsList = ordenateBySchedule(filmsList);
 			generateFilms(filmsList);
 		},
 		error: function(error) {
@@ -71,9 +75,22 @@ function downloadPraiaShopping(filmsList) {
 }
 
 function generateFilms(films) {
-	var htmlFilmsList = document.getElementById("filmsList"); 
+	console.log("Filmes antes de ordenar: " + films.length);
 	for(var i = 0; i < films.length; i++) {
-		createNewListElement(htmlFilmsList, films[i]);
+		console.log(films[i].get("name") + " " + films[i].get("schedule"));
+	}
+	var htmlFilmsList = document.getElementById("filmsList");
+	var orderList = [];
+	for(var i = 0; i < films.length; i++) {
+		orderList[i] = i;
+	} 
+	ordenateBySchedule(films, orderList);
+	console.log("Filmes depois de ordenar: " + orderList.length);
+	for(var i = 0; i < orderList.length; i++) {
+		console.log(films[orderList[i]].get("name") + " " + films[orderList[i]].get("schedule"));
+	}
+	for(var i = 0; i < orderList.length; i++) {
+		createNewListElement(htmlFilmsList, films[orderList[i]]);
 	}
 }
 
@@ -109,90 +126,9 @@ function createNewListElement(htmlFilmsList, film) {
 	var filmGenre = document.createElement("p");
 	textNode = document.createTextNode(film.get("gender"));
 	filmGenre.appendChild(textNode);
-	filmGenre.id = "genre"
+	filmGenre.id = "genre";
 	listItem.appendChild(filmGenre);
-
-	/*
-	var extraInfo = null;
-	if(film.get("shopping") === "Praia Shopping") {
-		extraInfo = getExtraInfoPraiaShopping(film);
-	} 
-	else (film.get("schedule").endsWithLetter()) {
-		getExtraInfo(film, listItem);
-	}
-
-	if(extraInfo != null) {
-		var filmExtraInfo = document.createElement("p");
-		textNode = document.createTextNode(extraInfo);
-		filmExtraInfo.appendChild(textNode);
-		filmExtraInfo.id = "extra_info";
-		listItem.appendChild(filmExtraInfo);
-	}
-	*/
 }
-
-/*
-function getExtraInfo(film, listItem) {
-	var schedule = film.get("schedule");
-	var letter = schedule.charAt(schedule.length - 1);
-	if(film.get("shopping") === "Natal Shopping") {
-		var ExtraNatal = Parse.Object.extend("ExtraNatal");
-		var query = new Parse.Query(ExtraNatal);
-		query.find({
-			success: function(parseObjects) {
-				var extra = parseObjects[0].get("Extra");
-				var listExtras = generateListExtrasCinepolis(extra);
-				generateExtraInfoPTag(listItem, extra);
-			},
-			error: function(error) {
-				alert("Error: " + error.code + " " + error.message);
-			}
-		});
-	} else if(film.get("shopping") === "Norte Shopping") {
-		var ExtraNorte = Parse.Object.extend("ExtraNorte");
-		var query = new Parse.Query(ExtraNorte);
-		query.find({
-			success: function(parseObjects) {
-				var extra = parseObjects[0].get("Extra");
-				extra = extra.substring(extra.indexOf(letter), extra.lastIndexOf(")"));
-			},
-			error: function(error) {
-				alert("Error: " + error.code + " " + error.message);
-			}
-		});
-	} else if(film.get("shopping") === "Midway Mall") {
-		var ExtraMidway = Parse.Object.extend("ExtraMidway");
-		var query = new Parse.Query(ExtraMidway);
-		query.find({
-			success: function(parseObjects) {
-				var extra = parseObjects[0].get("Extra");
-
-			},
-			error: function(error) {
-				alert("Error: " + error.code + " " + error.message);
-			}
-		});
-	}
-}
-
-function generateListExtrasCinepolis(extra) {
-
-}
-
-function generateExtraInfoPTag(listItem, extra) {
-	var filmExtraInfo = document.createELement("p");
-	var textNode = document.createTextNode(extra);
-	filmExtraInfo.appendChild(textNode);
-	filmExtraInfo.id = "extra_info";
-	listItem.appendChild(filmExtraInfo);
-}
-
-function getExtraInfoPraiaShopping(film) {
-	var extra = film.get("schedule");
-	extra = extra.substring(extra.indexOf("(") + 1, extra.length - 2);
-	return extra;
-}
-*/
 
 function loadFilmInfo(film, htmlFilmsList) {
 	var divGeneral = document.getElementById("generalElement");
@@ -205,7 +141,6 @@ function loadFilmInfo(film, htmlFilmsList) {
 }
 
 function expandListThroughSchedules(filmsList) {
-	var list = [];
 	for(var i = 0; i < filmsList.length; i++) {
 		var schedules = filmsList[i].get("schedule");
 		var countFilms = 1;
@@ -223,12 +158,16 @@ function expandListThroughSchedules(filmsList) {
 			listOfSchedules[j] = schedules.substring(0, end);
 			schedules = schedules.substring(end+1);
 		}
-		for(var j = 0; j < countFilms; j++) {
-			var size = list.unshift(filmsList[i]);
-			list[0].set("schedule", listOfSchedules[j]);
+
+		filmsList[i].set("schedule", listOfSchedules[0]);
+		for(var j = 1; j < listOfSchedules.length; j++) {
+			//Error is here, should copy each element to a new object and pass on push
+			//var clone = JSON.parse(JSON.stringify(filmsList[i].set("schedule", listOfSchedules[j])));
+			var clone = jQuery.extend(true, {}, filmsList[i]);
+			filmsList.push(clone);
+			filmsList[filmsList.length - 1].set("schedule", listOfSchedules[j]);
 		}
 	}
-	return list;
 }
 
 function takeOutBrackets(filmsList) {
@@ -241,30 +180,45 @@ function takeOutBrackets(filmsList) {
 	return filmsList;
 }
 
-function ordenateBySchedule(filmsList) {
+function ordenateBySchedule(filmsList, orderList) {
 	for(var i = 0; i < filmsList.length - 1; i++) {
 		for(var j = i+1; j < filmsList.length; j++) {
 			var hour1, hour2;
-			hour1 = getHour(filmsList[i].get("schedule"));
-			hour2 = getHour(filmsList[j].get("schedule"));
+			hour1 = getHour(filmsList[orderList[i]].get("schedule"));
+			hour2 = getHour(filmsList[orderList[j]].get("schedule"));
 			if(hour2 < hour1) {
-				var aux = filmsList[i];
-				filmsList[i] = filmsList[j];
-				filmsList[j] = aux;
+				//console.log("Primeiro: " + orderList[i] + ", Segundo: " + orderList[j]);
+				var aux = orderList[i];
+				orderList[i] = orderList[j];
+				orderList[j] = aux;
+				//console.log("Trocou: Primeiro: " + orderList[i] + ", Segundo: " + orderList[j]);
 			} else if(hour2 == hour1) {
 				var min1, min2;
-				min1 = getMin(filmsList[i].get("schedule"));
-				min2 = getMin(filmsList[j].get("schedule"));
+				min1 = getMin(filmsList[orderList[i]].get("schedule"));
+				min2 = getMin(filmsList[orderList[j]].get("schedule"));
 				if(min2 < min1) {
-					var aux = filmsList[i];
-					filmsList[i] = filmsList[j];
-					filmsList[j] = aux;
+					//console.log("Primeiro: " + orderList[i] + ", Segundo: " + orderList[j]);
+					var aux = orderList[i];
+					orderList[i] = orderList[j];
+					orderList[j] = aux;
+					//console.log("Trocou: Primeiro: " + orderList[i] + ", Segundo: " + orderList[j]);
 				}
 			}
 		}
 	}
+}
 
-	return filmsList;
+function copyFromTo(from, to) {
+	to.set("name", from.get("name"));
+	to.set("sinopse", from.get("sinopse"));
+	to.set("language", from.get("language"));
+	to.set("image", from.get("image"));
+	to.set("duration", from.get("duration"));
+	to.set("gender", from.get("gender"));
+	to.set("censure", from.get("censure"));
+	to.set("roomType", from.get("roomType"));
+	to.set("schedule", from.get("schedule"));
+	to.set("shopping", from.get("shopping"));
 }
 
 function getHour(schedule) {
