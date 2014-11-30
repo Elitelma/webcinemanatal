@@ -3,14 +3,14 @@
 	padding: 0;
 }
 
-div {
+#generalElement {
 	width: 500px;
 	margin-right: auto;
 	margin-left: auto;
 	margin-top: 20px;
 }
 
-ul {
+#generalElement ul {
 	list-style-type: none;
   	height: 600px;
   	overflow: hidden;
@@ -19,6 +19,7 @@ ul {
 
 h3 {
   	font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+  	color: #FFAE36;
 }
  
 li img {
@@ -26,19 +27,44 @@ li img {
   	margin: 0 15px 0 0;
   	width: 15%;
 }
- 
+
+li #schedule {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+li #genre {
+	text-align: left;
+	font-size: 14px;
+}
+
 li p {
-  	font: 200 12px/1.5 Georgia, Times New Roman, serif;
+  	font: 200 12px/1.5 Helvetica, Verdana, sans-serif;
+  	color: #ffae36;
+  	text-align: right;
 }
  
 li {
   	padding: 10px;
   	overflow: auto;
+  	background: -webkit-linear-gradient(#014F95, #014470); /* For Safari 5.1 to 6.0 */
+  	background: -o-linear-gradient(#014F95, #014470); /* For Opera 11.1 to 12.0 */
+  	background: -moz-linear-gradient(#014F95, #014470); /* For Firefox 3.6 to 15 */
+  	background: linear-gradient(#014F95, #014470); /* Standard syntax */
+  	border-bottom: 1px solid #FF9D15;
 }
  
 li:hover {
   	background: #eee;
   	cursor: pointer;
 }
+
+#generalFilmInfo {
+	width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 20px;
+}
+
 
 
