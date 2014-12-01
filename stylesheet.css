@@ -3,6 +3,10 @@
 	padding: 0;
 }
 
+body {
+	background: #FFCCAD;
+}
+
 #menu {
 	margin-right: auto;
 	margin-left: auto;
@@ -18,6 +22,7 @@
 	background: #FFAE36;
 	color: #014470;
 	border: 2px solid #014470;
+	border-bottom: 0;
 }
 
 #menu .label:hover {
@@ -32,7 +37,9 @@
 	font: bold 14px/1.5 Helvetica, Verdana, sans-serif;
  	color: #FFAE36;
  	padding: 5px;
- 	border: 1px solid #ccc;
+ 	border: 1px solid #014470;
+ 	border-bottom: 1px solid #FFAE36;
+ 	border-top: 0;
  	text-align: center;
  	background: -webkit-linear-gradient(#014F95, #014470); /* For Safari 5.1 to 6.0 */
   	background: -o-linear-gradient(#014F95, #014470); /* For Opera 11.1 to 12.0 */
@@ -41,7 +48,9 @@
 }
 
 #menu li:hover {
-	background: #eee;
+	background: #FFAE36;
+	color: #014470;
+	border: 2px solid #014470;
   	cursor: pointer;
 }
 

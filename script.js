@@ -210,6 +210,7 @@ function createNewListElement(htmlFilmsList, film) {
 function loadFilmInfo(film, htmlFilmsList) {
 	deleteList(htmlFilmsList);
 
+	var divGeneral = document.getElementById("generalElement");
 	var filmImg = document.createElement("img");
 	filmImg.src = film.get("image").url();
 	divGeneral.appendChild(filmImg);
