@@ -3,8 +3,48 @@
 	padding: 0;
 }
 
+#menu {
+	margin-right: auto;
+	margin-left: auto;
+	float: left;
+	padding: 0;
+	list-style: none;
+	width: 200px;
+}
+
+#menu li {
+	position: relative;
+	display: block;
+	font: bold 16px/1.5 Helvetica, Verdana, sans-serif;
+ 	text-decoration: none;
+ 	color: #FFAE36;
+ 	padding: 5px;
+ 	border: 1px solid #ccc;
+ 	text-align: center;
+ 	background: -webkit-linear-gradient(#014F95, #014470); /* For Safari 5.1 to 6.0 */
+  	background: -o-linear-gradient(#014F95, #014470); /* For Opera 11.1 to 12.0 */
+  	background: -moz-linear-gradient(#014F95, #014470); /* For Firefox 3.6 to 15 */
+  	background: linear-gradient(#014F95, #014470); /* Standard syntax */
+}
+
+#menu li:hover {
+	background: #eee;
+  	cursor: pointer;
+}
+
+#menu li ul {
+	position: absolute;
+	left: 149px;
+	top: 0;
+	display: none;
+}
+
+#menu li:hover ul { 
+	display: block; 
+}
+
 #generalElement {
-	width: 500px;
+	width: 700px;
 	margin-right: auto;
 	margin-left: auto;
 	margin-top: 20px;
@@ -17,34 +57,7 @@
   	overflow-y: scroll;
 }
 
-h3 {
-  	font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
-  	color: #FFAE36;
-}
- 
-li img {
-  	float: left;
-  	margin: 0 15px 0 0;
-  	width: 15%;
-}
-
-li #schedule {
-	font-size: 18px;
-	font-weight: bold;
-}
-
-li #genre {
-	text-align: left;
-	font-size: 14px;
-}
-
-li p {
-  	font: 200 12px/1.5 Helvetica, Verdana, sans-serif;
-  	color: #ffae36;
-  	text-align: right;
-}
- 
-li {
+#filmsList li {
   	padding: 10px;
   	overflow: auto;
   	background: -webkit-linear-gradient(#014F95, #014470); /* For Safari 5.1 to 6.0 */
@@ -53,10 +66,37 @@ li {
   	background: linear-gradient(#014F95, #014470); /* Standard syntax */
   	border-bottom: 1px solid #FF9D15;
 }
- 
-li:hover {
+
+#filmsList li:hover {
   	background: #eee;
   	cursor: pointer;
+}
+
+#filmsList h3 {
+  	font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+  	color: #FFAE36;
+}
+ 
+#filmsList li img {
+  	float: left;
+  	margin: 0 15px 0 0;
+  	width: 15%;
+}
+
+#filmsList li #schedule {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+#filmsList li #genre {
+	text-align: left;
+	font-size: 14px;
+}
+
+#filmsList li p {
+  	font: 200 12px/1.5 Helvetica, Verdana, sans-serif;
+  	color: #ffae36;
+  	text-align: right;
 }
 
 #generalFilmInfo {
