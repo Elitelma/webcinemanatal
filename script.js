@@ -53,7 +53,6 @@ function downloadNorteShopping(natalShopList) {
 	var query = new Parse.Query(Norteshopping);
 	query.find({
 		success: function(norteShopList) {
-			console.log("Fez o download de Norte Shopping corretamente. Tipo: " + typeof(norteShopList));
 			var filmsList = natalShopList.concat(norteShopList);
 			if(showFilmsBy === "SCHEDULE") {
 				expandListThroughSchedules(filmsList);
@@ -73,7 +72,6 @@ function downloadMidwayMall(filmsList) {
 	var query = new Parse.Query(Midwaymall);
 	query.find({
 		success: function(midwayMallList) {
-			console.log("Fez o download de Midway Mall corretamente. Tipo: " + typeof(midwayMallList));
 			if(showFilmsBy === "SCHEDULE") {
 				expandListThroughSchedules(midwayMallList);
 			} else if(showFilmsBy === "SHOPPING") {
@@ -93,7 +91,6 @@ function downloadPraiaShopping(filmsList) {
 	var query = new Parse.Query(Praiashopping);
 	query.find({
 		success: function(praiaShopList) {
-			console.log("Fez o download de Praiashopping corretamente. Tipo: " + typeof(praiaShopList));
 			praiaShopList = takeOutBrackets(praiaShopList);
 			if(showFilmsBy === "SCHEDULE") {
 				expandListThroughSchedules(praiaShopList);
@@ -110,6 +107,7 @@ function downloadPraiaShopping(filmsList) {
 }
 
 function generateFilms(films) {
+	removeFilms(films);
 	var htmlFilmsList = document.getElementById("filmsList");
 	var orderList = [];
 	for(var i = 0; i < films.length; i++) {
@@ -121,6 +119,50 @@ function generateFilms(films) {
 	for(var i = 0; i < orderList.length; i++) {
 		createNewListElement(htmlFilmsList, films[orderList[i]]);
 	}
+}
+
+function removeFilms(films) {
+	var checkNatal = document.getElementById("checkNatal");
+	var checkNorte = document.getElementById("checkNorte");
+	var checkMidway = document.getElementById("checkMidway");
+	var checkPraia = document.getElementById("checkPraia");
+
+	var shopping;
+	if(!checkNatal.checked) {
+		shopping = "Natal Shopping";
+		takeOutFilms(shopping, films);
+	}
+	if(!checkNorte.checked) {
+		shopping = "Norte Shopping";
+		takeOutFilms(shopping, films);
+	}
+	if(!checkMidway.checked) {
+		shopping = "Midway Mall";
+		takeOutFilms(shopping, films);
+	}
+	if(!checkPraia.checked) {
+		shopping = "Praia Shopping";
+		takeOutFilms(shopping, films);
+	}
+}
+
+function takeOutFilms(shopping, films) {
+	var indexes = [];
+	for(var i = 0, j = 0; i < films.length; i++) {
+		if(films[i].get("shopping") == shopping) {
+			console.log("Achou" + films[i].get("shopping"));
+			//indexes[j] = i;
+			//j++;
+			films.splice(i, 1);
+			i--;
+		}
+	}
+	/*
+	for(var i = 0; i < indexes.length; i++) {
+		console.log("Removendo " + films[indexes[i]].get("shopping"));
+		films.splice(indexes[i], 1);
+	}
+	*/
 }
 
 function createNewListElement(htmlFilmsList, film) {
@@ -140,6 +182,12 @@ function createNewListElement(htmlFilmsList, film) {
 	textNode = document.createTextNode(film.get("name"));
 	filmName.appendChild(textNode);
 	listItem.appendChild(filmName);
+
+	var filmLanguage = document.createElement("p");
+	textNode = document.createTextNode(film.get("language"));
+	filmLanguage.appendChild(textNode);
+	filmLanguage.id = "language";
+	listItem.appendChild(filmLanguage);
 
 	var filmSchedule = document.createElement("p");
 	textNode = document.createTextNode(film.get("schedule"));
@@ -283,6 +331,38 @@ function endsWithLetter(schedule) {
 	}
 }
 
+function changeCheckBoxNatalShopping() {
+	var checkbox = document.getElementById("checkNatal");
+	checkbox.checked = !checkbox.checked;
+	var htmlFilmsList = document.getElementById("filmsList");
+	deleteList(htmlFilmsList);
+	downloadFilms();
+}
+
+function changeCheckBoxNorteShopping() {
+	var checkbox = document.getElementById("checkNorte");
+	checkbox.checked = !checkbox.checked;
+	var htmlFilmsList = document.getElementById("filmsList");
+	deleteList(htmlFilmsList);
+	downloadFilms();
+}
+
+function changeCheckBoxMidwayMall() {
+	var checkbox = document.getElementById("checkMidway");
+	checkbox.checked = !checkbox.checked;
+	var htmlFilmsList = document.getElementById("filmsList");
+	deleteList(htmlFilmsList);
+	downloadFilms();
+}
+
+function changeCheckBoxPraiaShopping() {
+	var checkbox = document.getElementById("checkPraia");
+	checkbox.checked = !checkbox.checked;
+	var htmlFilmsList = document.getElementById("filmsList");
+	deleteList(htmlFilmsList);
+	downloadFilms();
+}
+
 function deleteList(htmlFilmsList) {
 	var divGeneral = document.getElementById("generalElement");
 	divGeneral.removeChild(htmlFilmsList);
@@ -290,24 +370,4 @@ function deleteList(htmlFilmsList) {
 	var newList = document.createElement("ul");
 	newList.id = "filmsList";
 	divGeneral.appendChild(newList);
-}
-
-function changeCheckBoxNatalShopping() {
-	var checkbox = document.getElementById("checkNatal");
-	checkbox.checked = !checkbox.checked;
-}
-
-function changeCheckBoxNorteShopping() {
-	var checkbox = document.getElementById("checkNorte");
-	checkbox.checked = !checkbox.checked;
-}
-
-function changeCheckBoxMidwayMall() {
-	var checkbox = document.getElementById("checkMidway");
-	checkbox.checked = !checkbox.checked;
-}
-
-function changeCheckBoxPraiaShopping() {
-	var checkbox = document.getElementById("checkPraia");
-	checkbox.checked = !checkbox.checked;
 }
