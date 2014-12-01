@@ -291,3 +291,23 @@ function deleteList(htmlFilmsList) {
 	newList.id = "filmsList";
 	divGeneral.appendChild(newList);
 }
+
+function changeCheckBoxNatalShopping() {
+	var checkbox = document.getElementById("checkNatal");
+	checkbox.checked = !checkbox.checked;
+}
+
+function changeCheckBoxNorteShopping() {
+	var checkbox = document.getElementById("checkNorte");
+	checkbox.checked = !checkbox.checked;
+}
+
+function changeCheckBoxMidwayMall() {
+	var checkbox = document.getElementById("checkMidway");
+	checkbox.checked = !checkbox.checked;
+}
+
+function changeCheckBoxPraiaShopping() {
+	var checkbox = document.getElementById("checkPraia");
+	checkbox.checked = !checkbox.checked;
+}

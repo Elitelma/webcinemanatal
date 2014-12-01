@@ -7,16 +7,27 @@
 	margin-right: auto;
 	margin-left: auto;
 	float: left;
-	padding: 0;
+	padding-right: 3px;
 	list-style: none;
 	width: 200px;
+}
+
+#menu .label {
+	font: bold 16px/1.5 Helvetica, Verdana, sans-serif;
+	text-align: left;
+	background: #FFAE36;
+	color: #014470;
+	border: 2px solid #014470;
+}
+
+#menu .label:hover {
+
 }
 
 #menu li {
 	position: relative;
 	display: block;
-	font: bold 16px/1.5 Helvetica, Verdana, sans-serif;
- 	text-decoration: none;
+	font: bold 14px/1.5 Helvetica, Verdana, sans-serif;
  	color: #FFAE36;
  	padding: 5px;
  	border: 1px solid #ccc;
