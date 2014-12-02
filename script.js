@@ -14,21 +14,38 @@ function config() {
 }
 
 function showFilmsBySchedule() {
-	if(showFilmsBy != "SCHEDULE") {
+	if(showFilmsBy != "SCHEDULE" && !onInfo) {
 		showFilmsBy = "SCHEDULE";
 		var htmlFilmsList = document.getElementById("filmsList");
+		deleteList(htmlFilmsList);
+		createList();
+		downloadFilms();
+	} else if(showFilmsBy != "SCHEDULE") {
+		showFilmsBy = "SCHEDULE";
 		deleteList(htmlFilmsList);
 		downloadFilms();
 	}
 }
 
 function showFilmsByShopping() {
-	if(showFilmsBy != "SHOPPING") {
+	if(showFilmsBy != "SHOPPING" && !onInfo) {
 		showFilmsBy = "SHOPPING";
 		var htmlFilmsList = document.getElementById("filmsList");
 		deleteList(htmlFilmsList);
+		createList();
+		downloadFilms();
+	} else if(showFilmsBy != "SHOPPING") {
+		showFilmsBy = "SHOPPING";
+		deleteList(htmlFilmsList);
 		downloadFilms();
 	}
+}
+
+function createList() {
+	var divGeneral = document.getElementById("generalElement");
+	var htmlFilmsList = document.createElement("ul");
+	htmlFilmsList.id = "filmsList";
+	divGeneral.appendChild(htmlFilmsList);
 }
 
 function downloadFilms() {
@@ -179,6 +196,7 @@ function createNewListElement(htmlFilmsList, film) {
 	listItem.appendChild(filmName);
 
 	var filmLanguage = document.createElement("p");
+	var roomType = film.get("roomType");
 	textNode = document.createTextNode(film.get("language"));
 	filmLanguage.appendChild(textNode);
 	filmLanguage.id = "language";
@@ -195,7 +213,7 @@ function createNewListElement(htmlFilmsList, film) {
 	filmShopping.appendChild(textNode);
 	listItem.appendChild(filmShopping);
 
-	if(film.get("roomType") != "none" && showFilmsBy != "SHOPPING") {
+	if(film.get("roomType") != "none") {
 		var filmRoomType = document.createElement("p");
 		var text = film.get("roomType").replace("ico", "");
 		text = text.charAt(0).toUpperCase() + text.slice(1);	
@@ -223,6 +241,7 @@ function loadFilmInfo(film, htmlFilmsList) {
 	backButton.addEventListener("click", function() {
 		var htmlFilmsList = document.getElementById("filmsList");
 		deleteList(htmlFilmsList);
+
 		var newList = document.createElement("ul");
 		newList.id = "filmsList";
 		divGeneral.appendChild(newList);
@@ -413,6 +432,7 @@ function changeCheckBoxNatalShopping() {
 	checkbox.checked = !checkbox.checked;
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
+	createList();
 	downloadFilms();
 }
 
@@ -421,6 +441,7 @@ function changeCheckBoxNorteShopping() {
 	checkbox.checked = !checkbox.checked;
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
+	createList();
 	downloadFilms();
 }
 
@@ -429,6 +450,7 @@ function changeCheckBoxMidwayMall() {
 	checkbox.checked = !checkbox.checked;
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
+	createList();
 	downloadFilms();
 }
 
@@ -437,6 +459,7 @@ function changeCheckBoxPraiaShopping() {
 	checkbox.checked = !checkbox.checked;
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
+	createList();
 	downloadFilms();
 }
 
@@ -451,9 +474,5 @@ function deleteList(htmlFilmsList) {
 		divGeneral.removeChild(divInfo);
 		var backButton = document.getElementById("backButton");
 		divGeneral.removeChild(backButton);
-
-		var newList = document.createElement("ul");
-		newList.id = "filmsList";
-		divGeneral.appendChild(newList);
 	}
 }
