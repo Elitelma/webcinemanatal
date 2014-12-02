@@ -4,6 +4,7 @@ var PARSE_CLIENTKEY = "dMsW9PbJ0IXIgr1G6SQTAe3RsEcJyU6JJk1NdAGb";
 Parse.initialize(PARSE_ID, PARSE_CLIENTKEY);
 
 var showFilmsBy = "SCHEDULE";
+var onInfo = false;
 
 window.addEventListener("load", config, false);
 
@@ -157,12 +158,6 @@ function takeOutFilms(shopping, films) {
 			i--;
 		}
 	}
-	/*
-	for(var i = 0; i < indexes.length; i++) {
-		console.log("Removendo " + films[indexes[i]].get("shopping"));
-		films.splice(indexes[i], 1);
-	}
-	*/
 }
 
 function createNewListElement(htmlFilmsList, film) {
@@ -200,6 +195,16 @@ function createNewListElement(htmlFilmsList, film) {
 	filmShopping.appendChild(textNode);
 	listItem.appendChild(filmShopping);
 
+	if(film.get("roomType") != "none" && showFilmsBy != "SHOPPING") {
+		var filmRoomType = document.createElement("p");
+		var text = film.get("roomType").replace("ico", "");
+		text = text.charAt(0).toUpperCase() + text.slice(1);	
+		textNode = document.createTextNode("Sala " + text);
+		filmRoomType.appendChild(textNode);
+		filmRoomType.id = "roomType";
+		listItem.appendChild(filmRoomType);
+	}
+
 	var filmGenre = document.createElement("p");
 	textNode = document.createTextNode(film.get("gender"));
 	filmGenre.appendChild(textNode);
@@ -209,11 +214,82 @@ function createNewListElement(htmlFilmsList, film) {
 
 function loadFilmInfo(film, htmlFilmsList) {
 	deleteList(htmlFilmsList);
+	onInfo = true;
 
 	var divGeneral = document.getElementById("generalElement");
+	var textNode;
+
+	var backButton = document.createElement("button");
+	backButton.addEventListener("click", function() {
+		var htmlFilmsList = document.getElementById("filmsList");
+		deleteList(htmlFilmsList);
+		var newList = document.createElement("ul");
+		newList.id = "filmsList";
+		divGeneral.appendChild(newList);
+		downloadFilms();
+	});
+	textNode = document.createTextNode("Voltar");
+	backButton.appendChild(textNode);
+	backButton.id = "backButton";
+	divGeneral.appendChild(backButton);
+
+	$(document).keydown(function (e) {
+  		if (e.which === 8) {
+    		e.preventDefault();
+    		var htmlFilmsList = document.getElementById("filmsList");
+			deleteList(htmlFilmsList);
+			var newList = document.createElement("ul");
+			newList.id = "filmsList";
+			divGeneral.appendChild(newList);
+			downloadFilms();
+    	return false;
+  		}
+	});
+
+	var divInfo = document.createElement("div");
+	divInfo.id = "info";
+	divGeneral.appendChild(divInfo);
+
 	var filmImg = document.createElement("img");
 	filmImg.src = film.get("image").url();
-	divGeneral.appendChild(filmImg);
+	filmImg.id = "infoImg";
+	divInfo.appendChild(filmImg);
+
+	var filmName = document.createElement("h3");
+	textNode = document.createTextNode(film.get("name"));
+	filmName.appendChild(textNode);
+	filmName.id = "infoName";
+	divInfo.appendChild(filmName);
+
+	var filmScheduleLanguage = document.createElement("p");
+	textNode = document.createTextNode(film.get("schedule") + " - " + film.get("language"));
+	filmScheduleLanguage.appendChild(textNode);
+	filmScheduleLanguage.id = "infoScheduleLanguage";
+	divInfo.appendChild(filmScheduleLanguage);
+
+	var filmGender = document.createElement("p");
+	textNode = document.createTextNode(film.get("gender"));
+	filmGender.appendChild(textNode);
+	filmGender.id = "infoGender";
+	divInfo.appendChild(filmGender);
+
+	var filmDuration = document.createElement("p");
+	textNode = document.createTextNode(film.get("duration"));
+	filmDuration.appendChild(textNode);
+	filmDuration.id = "infoDuration";
+	divInfo.appendChild(filmDuration);
+
+	var filmCensure = document.createElement("p");
+	textNode = document.createTextNode(film.get("censure"));
+	filmCensure.appendChild(textNode);
+	filmCensure.id = "infoCensure";
+	divInfo.appendChild(filmCensure);
+
+	var filmSinopse = document.createElement("p");
+	textNode = document.createTextNode(film.get("sinopse"));
+	filmSinopse.appendChild(textNode);
+	filmSinopse.id = "infoSinopse";
+	divInfo.appendChild(filmSinopse);
 }
 
 function expandListThroughSchedules(filmsList) {
@@ -365,10 +441,19 @@ function changeCheckBoxPraiaShopping() {
 }
 
 function deleteList(htmlFilmsList) {
-	var divGeneral = document.getElementById("generalElement");
-	divGeneral.removeChild(htmlFilmsList);
+	if(!onInfo) {
+		var divGeneral = document.getElementById("generalElement");
+		divGeneral.removeChild(htmlFilmsList);
+	} else {
+		onInfo = false;
+		var divGeneral = document.getElementById("generalElement");
+		var divInfo = document.getElementById("info");
+		divGeneral.removeChild(divInfo);
+		var backButton = document.getElementById("backButton");
+		divGeneral.removeChild(backButton);
 
-	var newList = document.createElement("ul");
-	newList.id = "filmsList";
-	divGeneral.appendChild(newList);
+		var newList = document.createElement("ul");
+		newList.id = "filmsList";
+		divGeneral.appendChild(newList);
+	}
 }

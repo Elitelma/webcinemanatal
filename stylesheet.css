@@ -125,12 +125,56 @@ body {
   	text-align: right;
 }
 
-#generalFilmInfo {
-	width: 500px;
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 20px;
+#info {
+	padding: 10px;
+	overflow: auto;
+  	background: -webkit-linear-gradient(#014F95, #014470); /* For Safari 5.1 to 6.0 */
+  	background: -o-linear-gradient(#014F95, #014470); /* For Opera 11.1 to 12.0 */
+  	background: -moz-linear-gradient(#014F95, #014470); /* For Firefox 3.6 to 15 */
+  	background: linear-gradient(#014F95, #014470); /* Standard syntax */
 }
+
+#backButton {
+	padding: 10px;
+}
+
+#info #infoImg {
+	float: left;
+	width: 30%;
+}
+
+#info h3 {
+	font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
+  	color: #ffae36;
+  	text-align: center;
+}
+
+#info #infoScheduleLanguage {
+	text-align: center;
+	margin-top: 0;
+}
+
+#info #infoGender {
+	margin-top: 10px;
+}
+
+#info p {
+	font: bold 16px/1.5 Helvetica, Verdana, sans-serif;
+  	color: #ffae36;
+  	text-align: right;
+}
+
+#info #infoSinopse {
+	clear: both;
+	color: #ffae36;
+	padding: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	font: 13px/1.5 Helvetica, Verdana, sans-serif;
+	text-align: justify;
+}
+
+
 
 
 
