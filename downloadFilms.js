@@ -2,7 +2,7 @@
 //de dados na nuvem, cada função é executada após a anterior ter sucesso e no final
 //callback() é executado, voltando para script.js na forma de filmsDownloaded();
 
-function downloadFilms2(callback) {
+function downloadFilms(callback) {
 	startDownload(callback);
 }
 

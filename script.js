@@ -5,6 +5,7 @@ Parse.initialize(PARSE_ID, PARSE_CLIENTKEY);
 
 var films = [];
 var filmsBySchedule = [];
+var searchFilms = [];
 var extraNatal, extraNorte, extraMidway, extraPraia;
 var showFilmsBy = "SHOPPING";
 var onInfo = false;
@@ -14,11 +15,32 @@ var searchBy = "NONE";
 window.addEventListener("load", config, false);
 
 function config() {
-	downloadFilms2(filmsDownloaded);
+	downloadFilms(filmsDownloaded);
 }
 
 function filmsDownloaded() {
+	setupSearch();
 	generateFilms();
+}
+
+function setupSearch() {
+	for(var i = 0; i < films.length; i++) {
+		searchFilms.push(films[i].get("name").trim());
+	}
+	searchFilms = uniq(searchFilms);
+    $("#searchField").autocomplete({
+    	minLength: 0,
+    	source: searchFilms,
+    	select: function(event, ui) {
+    		searchByName(ui.item.value);
+      	}
+    });
+    $("#searchField").keydown(function(e) {
+    	if(e.which === 13) {
+    		searchByName(document.getElementById("searchField").value);
+    		$("#searchField").autocomplete("close");
+    	}
+    });
 }
 
 function generateFilms(search) {
@@ -109,7 +131,7 @@ function showFilmsByShopping() {
 	}
 }
 
-function searchByName() {
+function searchByName(search) {
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
 	onSearch = true;
@@ -119,9 +141,7 @@ function searchByName() {
 	var textNode;
 	setupBackButton(divGeneral, textNode);
 	//createSearchByNameField(divGeneral);
-	var search = prompt("Digite sua busca:");
-	search = search.split(" ").join("");
-	search = search.toLowerCase();
+	search = search.split(" ").join("").toLowerCase();
 	createList();
 	generateFilms(search);
 }
@@ -288,7 +308,7 @@ function setupBackButton(divGeneral, textNode) {
 	divGeneral.appendChild(backButton);
 
 	$(document).keydown(function (e) {
-  		if (e.which === 8) {
+  		if (e.which === 8 && (onSearch || onInfo)) {
     		e.preventDefault();
     		var htmlFilmsList = document.getElementById("filmsList");
 			deleteList(htmlFilmsList);
@@ -408,4 +428,25 @@ function deleteList(htmlFilmsList) {
 		var backButton = document.getElementById("backButton");
 		divGeneral.removeChild(backButton);
 	}
+}
+
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for(var i = 0; i < len; i++) {
+         var item = a[i];
+         if(seen[item] !== 1) {
+               seen[item] = 1;
+               out[j++] = item;
+         }
+    }
+    return out;
+}
+
+function uniq(a) {
+    return a.sort().filter(function(item, pos) {
+        return !pos || item != a[pos - 1];
+    })
 }
