@@ -94,8 +94,25 @@ body {
 }
 
 #filmsList li:hover {
-  	background: #eee;
+  	background: #FFae36;
   	cursor: pointer;
+  	opacity: 1;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  	border-top: 2px solid #014F95;
+  	border-left: 2px solid #014F95;
+  	border-right: 2px solid #014F95;
+  	border-radius: 5px;
+}
+
+#filmsList li:hover h3 {
+	color: #014F95;
+}
+
+#filmsList li:hover p {
+	color: #014F95;
 }
 
 #filmsList h3 {
@@ -116,6 +133,10 @@ body {
 #filmsList li #schedule {
 	font-size: 18px;
 	font-weight: bold;
+}
+
+#filmsList li #schedule a {
+	text-decoration: underline;
 }
 
 #filmsList li #genre {
