@@ -138,6 +138,13 @@ body {
 	padding: 10px;
 }
 
+#searchField {
+	margin-left: 30px;
+	font: bold 16px/1.5 Helvetica, Verdana, sans-serif;;
+	display: inline;
+	color: #014F95;
+}
+
 #info #infoImg {
 	float: left;
 	width: 30%;
@@ -145,8 +152,13 @@ body {
 
 #info h3 {
 	font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
-  	color: #ffae36;
+  	color: #014F95;
   	text-align: center;
+  	background: #ffae36;
+}
+
+#info #infoShopping {
+	text-align: center;
 }
 
 #info #infoScheduleLanguage {
@@ -159,7 +171,7 @@ body {
 }
 
 #info p {
-	font: bold 16px/1.5 Helvetica, Verdana, sans-serif;
+	font: 16px/1.5 Helvetica, Verdana, sans-serif;
   	color: #ffae36;
   	text-align: right;
 }

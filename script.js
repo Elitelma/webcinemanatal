@@ -3,27 +3,95 @@ var PARSE_CLIENTKEY = "dMsW9PbJ0IXIgr1G6SQTAe3RsEcJyU6JJk1NdAGb";
 
 Parse.initialize(PARSE_ID, PARSE_CLIENTKEY);
 
-var showFilmsBy = "SCHEDULE";
+var films = [];
+var filmsBySchedule = [];
+var extraNatal, extraNorte, extraMidway, extraPraia;
+var showFilmsBy = "SHOPPING";
 var onInfo = false;
+var onSearch = false;
+var searchBy = "NONE";
 
 window.addEventListener("load", config, false);
 
 function config() {
-	var orderList = [];
-	downloadFilms();
+	downloadFilms2(filmsDownloaded);
 }
 
-function showFilmsBySchedule() {
+function filmsDownloaded() {
+	generateFilms();
+}
+
+function generateFilms(search) {
+	var orderList = [];
+
+	var list;
+	var htmlFilmsList = document.getElementById("filmsList");
+	var checkNatal = document.getElementById("checkNatal");
+	var checkNorte = document.getElementById("checkNorte");
+	var checkMidway = document.getElementById("checkMidway");
+	var checkPraia = document.getElementById("checkPraia");
+
+	if(showFilmsBy === "SHOPPING") {
+		for(var i = 0; i < films.length; i++) {
+			orderList[i] = i;
+		}
+		list = films;
+	}
+	else if(showFilmsBy === "SCHEDULE") {
+		for(var i = 0; i < filmsBySchedule.length; i++) {
+			orderList[i] = i;
+		}
+		list = filmsBySchedule;
+		ordenateBySchedule(list, orderList);
+	}
+
+	if(!onSearch) {
+		for(var i = 0; i < orderList.length; i++) {
+			var shopping = list[orderList[i]].get("shopping");
+			if(shopping === "Natal Shopping" && !checkNatal.checked) {
+				continue;
+			} else if(shopping === "Norte Shopping" && !checkNorte.checked) {
+				continue;
+			} else if(shopping === "Midway Mall" && !checkMidway.checked) {
+				continue;
+			} else if(shopping === "Praia Shopping" && !checkPraia.checked) {
+				continue;
+			}
+			createNewListElement(htmlFilmsList, list[orderList[i]]);
+		}
+	} else if(searchBy === "NAME"){
+		for(var i = 0; i < orderList.length; i++) {
+			var shopping = list[orderList[i]].get("shopping");
+			if(shopping === "Natal Shopping" && !checkNatal.checked) {
+				continue;
+			} else if(shopping === "Norte Shopping" && !checkNorte.checked) {
+				continue;
+			} else if(shopping === "Midway Mall" && !checkMidway.checked) {
+				continue;
+			} else if(shopping === "Praia Shopping" && !checkPraia.checked) {
+				continue;
+			}
+
+			var name = list[orderList[i]].get("name");
+			name = name.split(" ").join("").toLowerCase();
+			if(name.indexOf(search) > -1) {
+				createNewListElement(htmlFilmsList, list[orderList[i]]);
+			}
+		}
+	}
+}
+
+function showFilmsBySchedule() { 
 	if(showFilmsBy != "SCHEDULE" && !onInfo) {
 		showFilmsBy = "SCHEDULE";
 		var htmlFilmsList = document.getElementById("filmsList");
 		deleteList(htmlFilmsList);
 		createList();
-		downloadFilms();
+		generateFilms();
 	} else if(showFilmsBy != "SCHEDULE") {
 		showFilmsBy = "SCHEDULE";
 		deleteList(htmlFilmsList);
-		downloadFilms();
+		generateFilms();
 	}
 }
 
@@ -33,148 +101,33 @@ function showFilmsByShopping() {
 		var htmlFilmsList = document.getElementById("filmsList");
 		deleteList(htmlFilmsList);
 		createList();
-		downloadFilms();
+		generateFilms();
 	} else if(showFilmsBy != "SHOPPING") {
 		showFilmsBy = "SHOPPING";
 		deleteList(htmlFilmsList);
-		downloadFilms();
+		generateFilms();
 	}
 }
 
-function createList() {
-	var divGeneral = document.getElementById("generalElement");
-	var htmlFilmsList = document.createElement("ul");
-	htmlFilmsList.id = "filmsList";
-	divGeneral.appendChild(htmlFilmsList);
-}
-
-function downloadFilms() {
-	var Natalshopping = Parse.Object.extend("Natalshopping");
-	var query = new Parse.Query(Natalshopping);
-	query.find({
-		success: function(natalShopList) {
-			if(showFilmsBy === "SCHEDULE") {
-				expandListThroughSchedules(natalShopList);
-			} else if(showFilmsBy === "SHOPPING") {
-				insertSpacesOnSchedule(natalShopList);
-			}
-			downloadNorteShopping(natalShopList);
-		},
-		error: function(error) {
-			alert("Error: " + error.code + " " + error.message);
-		}
-	});
-}
-
-function downloadNorteShopping(natalShopList) {
-	var Norteshopping = Parse.Object.extend("Norteshopping");
-	var query = new Parse.Query(Norteshopping);
-	query.find({
-		success: function(norteShopList) {
-			var filmsList = natalShopList.concat(norteShopList);
-			if(showFilmsBy === "SCHEDULE") {
-				expandListThroughSchedules(filmsList);
-			} else if(showFilmsBy === "SHOPPING") {
-				insertSpacesOnSchedule(filmsList);
-			}
-			downloadMidwayMall(filmsList);
-		},
-		error: function(error) {
-			alert("Error: " + error.code + " " + error.message);
-		}
-	});
-}
-
-function downloadMidwayMall(filmsList) {
-	var Midwaymall = Parse.Object.extend("Midwaymall");
-	var query = new Parse.Query(Midwaymall);
-	query.find({
-		success: function(midwayMallList) {
-			if(showFilmsBy === "SCHEDULE") {
-				expandListThroughSchedules(midwayMallList);
-			} else if(showFilmsBy === "SHOPPING") {
-				insertSpacesOnSchedule(midwayMallList);
-			}
-			filmsList = filmsList.concat(midwayMallList);
-			downloadPraiaShopping(filmsList);
-		},
-		error: function(error) {
-			alert("Error: " + error.code + " " + error.message);
-		}
-	});
-}
-
-function downloadPraiaShopping(filmsList) {
-	var Praiashopping = Parse.Object.extend("Praiashopping");
-	var query = new Parse.Query(Praiashopping);
-	query.find({
-		success: function(praiaShopList) {
-			praiaShopList = takeOutBrackets(praiaShopList);
-			if(showFilmsBy === "SCHEDULE") {
-				expandListThroughSchedules(praiaShopList);
-			} else if(showFilmsBy === "SHOPPING") {
-				insertSpacesOnSchedule(praiaShopList);
-			}
-			filmsList = filmsList.concat(praiaShopList);
-			generateFilms(filmsList);
-		},
-		error: function(error) {
-			alert("Error: " + error.code + " " + error.message);
-		}
-	});
-}
-
-function generateFilms(films) {
-	removeFilms(films);
+function searchByName() {
 	var htmlFilmsList = document.getElementById("filmsList");
-	var orderList = [];
-	for(var i = 0; i < films.length; i++) {
-		orderList[i] = i;
-	}
-	if(showFilmsBy === "SCHEDULE") {
-		ordenateBySchedule(films, orderList);	
-	} 
-	for(var i = 0; i < orderList.length; i++) {
-		createNewListElement(htmlFilmsList, films[orderList[i]]);
-	}
+	deleteList(htmlFilmsList);
+	onSearch = true;
+	searchBy = "NAME";
+
+	var divGeneral = document.getElementById("generalElement");
+	var textNode;
+	setupBackButton(divGeneral, textNode);
+	//createSearchByNameField(divGeneral);
+	var search = prompt("Digite sua busca:");
+	search = search.split(" ").join("");
+	search = search.toLowerCase();
+	createList();
+	generateFilms(search);
 }
 
-function removeFilms(films) {
-	var checkNatal = document.getElementById("checkNatal");
-	var checkNorte = document.getElementById("checkNorte");
-	var checkMidway = document.getElementById("checkMidway");
-	var checkPraia = document.getElementById("checkPraia");
+function searchBySchedule() {
 
-	var shopping;
-	if(!checkNatal.checked) {
-		shopping = "Natal Shopping";
-		takeOutFilms(shopping, films);
-	}
-	if(!checkNorte.checked) {
-		shopping = "Norte Shopping";
-		takeOutFilms(shopping, films);
-	}
-	if(!checkMidway.checked) {
-		shopping = "Midway Mall";
-		takeOutFilms(shopping, films);
-	}
-	if(!checkPraia.checked) {
-		shopping = "Praia Shopping";
-		takeOutFilms(shopping, films);
-	}
-}
-
-function takeOutFilms(shopping, films) {
-	var indexes = [];
-	for(var i = 0, j = 0; i < films.length; i++) {
-		if(films[i].get("shopping") == shopping) {
-			console.log("Achou" + films[i].get("shopping"));
-			//indexes[j] = i;
-			//j++;
-			films.splice(i, 1);
-			i--;
-		}
-	}
 }
 
 function createNewListElement(htmlFilmsList, film) {
@@ -236,34 +189,7 @@ function loadFilmInfo(film, htmlFilmsList) {
 
 	var divGeneral = document.getElementById("generalElement");
 	var textNode;
-
-	var backButton = document.createElement("button");
-	backButton.addEventListener("click", function() {
-		var htmlFilmsList = document.getElementById("filmsList");
-		deleteList(htmlFilmsList);
-
-		var newList = document.createElement("ul");
-		newList.id = "filmsList";
-		divGeneral.appendChild(newList);
-		downloadFilms();
-	});
-	textNode = document.createTextNode("Voltar");
-	backButton.appendChild(textNode);
-	backButton.id = "backButton";
-	divGeneral.appendChild(backButton);
-
-	$(document).keydown(function (e) {
-  		if (e.which === 8) {
-    		e.preventDefault();
-    		var htmlFilmsList = document.getElementById("filmsList");
-			deleteList(htmlFilmsList);
-			var newList = document.createElement("ul");
-			newList.id = "filmsList";
-			divGeneral.appendChild(newList);
-			downloadFilms();
-    	return false;
-  		}
-	});
+	setupBackButton(divGeneral, textNode);	
 
 	var divInfo = document.createElement("div");
 	divInfo.id = "info";
@@ -279,6 +205,12 @@ function loadFilmInfo(film, htmlFilmsList) {
 	filmName.appendChild(textNode);
 	filmName.id = "infoName";
 	divInfo.appendChild(filmName);
+
+	var filmShopping = document.createElement("p");
+	textNode = document.createTextNode(film.get("shopping"));
+	filmShopping.appendChild(textNode);
+	filmShopping.id = "infoShopping";
+	divInfo.appendChild(filmShopping);
 
 	var filmScheduleLanguage = document.createElement("p");
 	textNode = document.createTextNode(film.get("schedule") + " - " + film.get("language"));
@@ -311,54 +243,6 @@ function loadFilmInfo(film, htmlFilmsList) {
 	divInfo.appendChild(filmSinopse);
 }
 
-function expandListThroughSchedules(filmsList) {
-	for(var i = 0; i < filmsList.length; i++) {
-		var schedules = filmsList[i].get("schedule");
-		var countFilms = 1;
-		for(var j = 0; j < schedules.length; j++) {
-			if(schedules[j] == ',') {
-				countFilms++;
-			}
-		}
-		var listOfSchedules = [];
-		for(var j = 0; j < countFilms; j++) {
-			var end = schedules.indexOf(",");
-			if(end == -1) {
-				end = schedules.length;
-			}
-			listOfSchedules[j] = schedules.substring(0, end);
-			schedules = schedules.substring(end+1);
-		}
-
-		filmsList[i].set("schedule", listOfSchedules[0]);
-		for(var j = 1; j < listOfSchedules.length; j++) {
-			//Error is here, should copy each element to a new object and pass on push
-			//var clone = JSON.parse(JSON.stringify(filmsList[i].set("schedule", listOfSchedules[j])));
-			var clone = jQuery.extend(true, {}, filmsList[i]);
-			filmsList.push(clone);
-			filmsList[filmsList.length - 1].set("schedule", listOfSchedules[j]);
-		}
-	}
-}
-
-function insertSpacesOnSchedule(filmsList) {
-	for(var i = 0; i < filmsList.length; i++) {
-		var schedule = filmsList[i].get("schedule");
-		schedule = schedule.replace(",", " - ");
-		filmsList[i].set("schedule", schedule);
-	}
-}
-
-function takeOutBrackets(filmsList) {
-	for(var i = 0; i < filmsList.length; i++) {
-		var schedule = filmsList[i].get("schedule");
-		var end = schedule.indexOf("(");
-		schedule = schedule.substring(0, end);
-		filmsList[i].set("schedule", schedule);
-	}
-	return filmsList;
-}
-
 function ordenateBySchedule(filmsList, orderList) {
 	for(var i = 0; i < filmsList.length - 1; i++) {
 		for(var j = i+1; j < filmsList.length; j++) {
@@ -387,17 +271,52 @@ function ordenateBySchedule(filmsList, orderList) {
 	}
 }
 
-function copyFromTo(from, to) {
-	to.set("name", from.get("name"));
-	to.set("sinopse", from.get("sinopse"));
-	to.set("language", from.get("language"));
-	to.set("image", from.get("image"));
-	to.set("duration", from.get("duration"));
-	to.set("gender", from.get("gender"));
-	to.set("censure", from.get("censure"));
-	to.set("roomType", from.get("roomType"));
-	to.set("schedule", from.get("schedule"));
-	to.set("shopping", from.get("shopping"));
+function setupBackButton(divGeneral, textNode) {
+	var backButton = document.createElement("button");
+	backButton.addEventListener("click", function() {
+		var htmlFilmsList = document.getElementById("filmsList");
+		deleteList(htmlFilmsList);
+
+		var newList = document.createElement("ul");
+		newList.id = "filmsList";
+		divGeneral.appendChild(newList);
+		generateFilms();
+	});
+	textNode = document.createTextNode("Voltar");
+	backButton.appendChild(textNode);
+	backButton.id = "backButton";
+	divGeneral.appendChild(backButton);
+
+	$(document).keydown(function (e) {
+  		if (e.which === 8) {
+    		e.preventDefault();
+    		var htmlFilmsList = document.getElementById("filmsList");
+			deleteList(htmlFilmsList);
+			var newList = document.createElement("ul");
+			newList.id = "filmsList";
+			divGeneral.appendChild(newList);
+			generateFilms();
+    	return false;
+  		}
+	});
+}
+
+function createSearchByNameField(divGeneral) {
+	var searchField = document.createElement("div");
+	searchField.id = "searchField";
+
+	var searchInput = document.createElement("input");
+	searchInput.id = "searchInput";
+	searchField.appendChild(searchInput);
+
+	var searchSubmit = document.createElement("input");
+	searchSubmit.type = "submit";
+	var textNode = document.createTextNode("Buscar!");
+	searchSubmit.appendChild(textNode);
+	searchSubmit.onclick = generateListBySearchName;
+
+	searchField.appendChild(searchSubmit);
+	divGeneral.appendChild(searchField);
 }
 
 function getHour(schedule) {
@@ -433,7 +352,7 @@ function changeCheckBoxNatalShopping() {
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
 	createList();
-	downloadFilms();
+	generateFilms();
 }
 
 function changeCheckBoxNorteShopping() {
@@ -442,7 +361,7 @@ function changeCheckBoxNorteShopping() {
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
 	createList();
-	downloadFilms();
+	generateFilms();
 }
 
 function changeCheckBoxMidwayMall() {
@@ -451,7 +370,7 @@ function changeCheckBoxMidwayMall() {
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
 	createList();
-	downloadFilms();
+	generateFilms();
 }
 
 function changeCheckBoxPraiaShopping() {
@@ -460,18 +379,32 @@ function changeCheckBoxPraiaShopping() {
 	var htmlFilmsList = document.getElementById("filmsList");
 	deleteList(htmlFilmsList);
 	createList();
-	downloadFilms();
+	generateFilms();
+}
+
+function createList() {
+	var divGeneral = document.getElementById("generalElement");
+	var htmlFilmsList = document.createElement("ul");
+	htmlFilmsList.id = "filmsList";
+	divGeneral.appendChild(htmlFilmsList);
 }
 
 function deleteList(htmlFilmsList) {
-	if(!onInfo) {
+	if(!onInfo && !onSearch) {
 		var divGeneral = document.getElementById("generalElement");
 		divGeneral.removeChild(htmlFilmsList);
-	} else {
+	} else if(onInfo) {
 		onInfo = false;
 		var divGeneral = document.getElementById("generalElement");
 		var divInfo = document.getElementById("info");
 		divGeneral.removeChild(divInfo);
+		var backButton = document.getElementById("backButton");
+		divGeneral.removeChild(backButton);
+	} else if(onSearch) {
+		onSearch = false;
+		searchBy = "NONE";
+		var divGeneral = document.getElementById("generalElement");
+		divGeneral.removeChild(htmlFilmsList);
 		var backButton = document.getElementById("backButton");
 		divGeneral.removeChild(backButton);
 	}

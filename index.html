@@ -14,10 +14,13 @@
     	<div id="generalElement">
     		<ul id="menu">
     			<li class="label">Mostrar filmes por:</li>
+          <li onclick="showFilmsByShopping()">Shopping</li>
 		    	<li onclick="showFilmsBySchedule()">Horário</li>
-		    	<li onclick="showFilmsByShopping()">Shopping</li>
-		    	<li>Opção 3</li>
 		    	<br>
+          <li class="label">Pesquisar filmes:</li>
+          <li onclick="searchByName()">Por nome</li>
+          <li onclick="searchBySchedule()">Por horário</li>
+          <br>
 		    	<li class="label">Escolher Shoppings:</li>
 		    	<li onclick="changeCheckBoxNatalShopping()"><input id="checkNatal" type="checkbox" checked> Natal Shopping</input></li>
 		    	<li onclick="changeCheckBoxNorteShopping()"><input id="checkNorte" type="checkbox" checked> Norte Shopping</input></li>
@@ -31,6 +34,7 @@
       	<script type="text/javascript" src="scripts/jquery-2.1.1.min.js"></script>
       	<script type="text/javascript" src="scripts/parse-1.3.2.js"></script>
       	<script type="text/javascript" src="scripts/pace.min.js"></script>
+        <script type="text/javascript" src="downloadFilms.js"></script>
       	<script type="text/javascript" src="script.js"></script>
   	</body>
 </html>
