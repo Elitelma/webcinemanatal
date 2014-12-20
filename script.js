@@ -216,7 +216,10 @@ function createNewListElement(htmlFilmsList, film) {
 	if(film.get("roomType") != "none") {
 		var filmRoomType = document.createElement("p");
 		var text = film.get("roomType").replace("ico", "");
-		text = text.charAt(0).toUpperCase() + text.slice(1);	
+		text = text.charAt(0).toUpperCase() + text.slice(1);
+		if(text.indexOf("ico3d") > -1) {
+			text = text.replace("ico3d", "3d");
+		}	
 		textNode = document.createTextNode("Sala " + text);
 		filmRoomType.appendChild(textNode);
 		filmRoomType.id = "roomType";
@@ -253,11 +256,23 @@ function getExtraFromLetter(shopping, letter) {
 				}
 			}
 			*/
-			return extraNatal.get("Extra");
+			extras = extraMidway.get("Extra").split(".");
+			for(var i = 0; i < extras.length; i++) {
+				extras[i] = extras[i].trim();
+				if(extras[i].charAt(0) === letter) {
+					return extras[i];
+				}
+			}
 		}
 	} else if(shopping === "Norte Shopping") {
 		if(extraNorte.get("Extra") !== "none") {
-			return extraNorte.get("Extra");
+			extras = extraMidway.get("Extra").split(".");
+			for(var i = 0; i < extras.length; i++) {
+				extras[i] = extras[i].trim();
+				if(extras[i].charAt(0) === letter) {
+					return extras[i];
+				}
+			}
 		}
 	} else if(shopping === "Midway Mall") {
 		if(extraMidway.get("Extra") !== "none") {
