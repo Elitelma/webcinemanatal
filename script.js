@@ -181,25 +181,43 @@ function createNewListElement(htmlFilmsList, film) {
 	listItem.appendChild(filmLanguage);
 
 	var filmSchedule = document.createElement("p");
+	var extras = [];
 	var schedule = film.get("schedule").split(" ").join("").split(",");
-	for(var i = 0; i < schedule.length; i++) {
-		if(endsWithLetter(schedule[i])) {
-			var tooltip = document.createElement("a");
-			tooltip.title = getExtraFromLetter(film.get("shopping"), schedule[i].charAt(schedule[i].length-1));
-			if(i !== schedule.length - 1) {
-				textNode = document.createTextNode(schedule[i] + ", ");
-			} else {
-				textNode = document.createTextNode(schedule[i]);
+	if( /Android|iPhone|iPod|iPad|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		for(var i = 0; i < schedule.length; i++) {
+			if(endsWithLetter(schedule[i])) {
+				extras.push(getExtraFromLetter(film.get("shopping"), schedule[i].charAt(schedule[i].length-1)));
 			}
-			tooltip.appendChild(textNode);
-			filmSchedule.appendChild(tooltip);
-		} else {
 			if(i !== schedule.length - 1) {
 				textNode = document.createTextNode(schedule[i] + ", ");
 			} else {
 				textNode = document.createTextNode(schedule[i]);
 			}
 			filmSchedule.appendChild(textNode);
+		}
+	} /*else if(/iPhone|iPod/i.test(navigator.userAgent)){
+		textNode = document.createTextNode(film.get("schedule"));
+		filmSchedule.appendChild(textNode);
+	} */else {
+		for(var i = 0; i < schedule.length; i++) {
+			if(endsWithLetter(schedule[i])) {
+				var tooltip = document.createElement("a");
+				tooltip.title = getExtraFromLetter(film.get("shopping"), schedule[i].charAt(schedule[i].length-1));
+				if(i !== schedule.length - 1) {
+					textNode = document.createTextNode(schedule[i] + ", ");
+				} else {
+					textNode = document.createTextNode(schedule[i]);
+				}
+				tooltip.appendChild(textNode);
+				filmSchedule.appendChild(tooltip);
+			} else {
+				if(i !== schedule.length - 1) {
+					textNode = document.createTextNode(schedule[i] + ", ");
+				} else {
+					textNode = document.createTextNode(schedule[i]);
+				}
+				filmSchedule.appendChild(textNode);
+			}
 		}
 	}
 
@@ -231,30 +249,23 @@ function createNewListElement(htmlFilmsList, film) {
 	filmGenre.appendChild(textNode);
 	filmGenre.id = "genre";
 	listItem.appendChild(filmGenre);
+
+	if( /Android|iPhone|iPod|iPad|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		listItem.appendChild(document.createElement("br"));
+		for(var i = 0; i < extras.length; i++) {
+			var extra = document.createElement("p");
+			textNode = document.createTextNode(extras[i]);
+			extra.appendChild(textNode);
+			extra.id = "schedulesExtra";
+			listItem.appendChild(extra);
+		}
+	}
 }
 
 function getExtraFromLetter(shopping, letter) {
 	var extras = [];
 	if(shopping === "Natal Shopping") {
 		if(extraNatal.get("Extra") !== "none") {
-			/*
-			extras = extraNatal.get("Extra").split();
-			console.log(extras);
-			for(var i = 0; i < extras.length; i++) {
-				if(extras[i] === "-") {
-					if(extras[i-2] === letter) {
-						var start = i - 2;
-						while(extra[i] !== "-") {
-							i++;
-						}
-						i-=2;
-						var end = extra[i];
-						extras = extras.join();
-						return extras.substring(start, end);
-					}
-				}
-			}
-			*/
 			extras = extraMidway.get("Extra").split(".");
 			for(var i = 0; i < extras.length; i++) {
 				extras[i] = extras[i].trim();
@@ -348,6 +359,22 @@ function loadFilmInfo(film, htmlFilmsList) {
 	filmSinopse.appendChild(textNode);
 	filmSinopse.id = "infoSinopse";
 	divInfo.appendChild(filmSinopse);
+
+	var extras = [];
+	var schedule = film.get("schedule").split(" ").join("").split(",");
+	for(var i = 0; i < schedule.length; i++) {
+		if(endsWithLetter(schedule[i])) {
+			extras.push(getExtraFromLetter(film.get("shopping"), schedule[i].charAt(schedule[i].length-1)));
+		}
+	}
+
+	for(var i = 0; i < extras.length; i++) {
+		var extra = document.createElement("p");
+		textNode = document.createTextNode(extras[i]);
+		extra.appendChild(textNode);
+		extra.id = "infoSchedulesExtra";
+		divInfo.appendChild(extra);
+	}
 }
 
 function ordenateBySchedule(filmsList, orderList) {

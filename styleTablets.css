@@ -78,7 +78,7 @@ body {
 
 #generalElement ul {
 	list-style-type: none;
-  	height: 550px;
+  	height: 700px;
   	overflow: hidden;
   	overflow-y: scroll;
 }
@@ -144,11 +144,6 @@ body {
 	font-size: 14px;
 }
 
-#filmsList li #schedulesExtra {
-	font-size: 8px;
-	text-align: center;
-}
-
 #filmsList li p {
   	font: 200 12px/1.5 Helvetica, Verdana, sans-serif;
   	color: #ffae36;
@@ -210,13 +205,6 @@ body {
 	margin-top: 10px;
 }
 
-#info #infoSchedulesExtra {
-	color: #014F95;
-	font-size: 8px;
-	text-align: center;
-	background: #FFAE36;
-}
-
 #info p {
 	font: 16px/1.5 Helvetica, Verdana, sans-serif;
   	color: #ffae36;
@@ -232,71 +220,6 @@ body {
 	font: 13px/1.5 Helvetica, Verdana, sans-serif;
 	text-align: justify;
 }
-
-@media only screen and (max-device-width: 480px) {
-	#menu {
-		display: none;
-	}
-
-	#generalElement ul {
-		height: 480px;
-	}
-
-	#filmsList h3 {
-  		font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
-  		color: #FFAE36;
-	}
-
-	#filmsList li img {
-  	float: left;
-  	margin: 0 15px 0 0;
-  	width: 20%;
-	}
-
-	#filmsList li #language {
-		text-align: left;
-	}
-
-	#filmsList li #schedule {
-		font-size: 22px;
-		font-weight: bold;
-	}
-
-	#filmsList li #schedule a {
-		text-decoration: underline;
-	}
-
-	#filmsList li #genre {
-		display: none;
-		text-align: left;
-		font-size: 14px;
-	}
-
-	#filmsList li #schedulesExtra {
-		font-size: 12px;
-		text-align: center;
-	}
-
-	#filmsList li p {
-	  	font: 200 16px/1.5 Helvetica, Verdana, sans-serif;
-	  	color: #ffae36;
-	  	text-align: right;
-	}
-}
-
-@media only screen and (max-device-width: 768px) {
-    /* tablets in portrait mode */
-
-    #generalElement ul {
-    	height: 860px;
-    }
-}
-
-@media only screen and (max-device-width: 1024px) {
-    /* tablets in landscape mode and smaller/older monitors */
-}
-
-
 
 
 
