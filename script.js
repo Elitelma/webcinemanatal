@@ -234,7 +234,6 @@ function createNewListElement(htmlFilmsList, film) {
 }
 
 function getExtraFromLetter(shopping, letter) {
-
 	var extras = [];
 	if(shopping === "Natal Shopping") {
 		if(extraNatal.get("Extra") !== "none") {
