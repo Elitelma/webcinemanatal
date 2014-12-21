@@ -97,22 +97,6 @@ body {
   	border-bottom: 1px solid #FF9D15;
 }
 
-#filmsList li:hover {
-	  background: #FFae36;
-	  border-top: 2px solid #014F95;
-	  border-left: 2px solid #014F95;
-	  border-right: 2px solid #014F95;
-	  border-radius: 5px;
-}
-
-	#filmsList li:hover h3 {
-		color: #014F95;
-	}
-
-	#filmsList li:hover p {
-		color: #014F95;
-	}
-
 #filmsList h3 {
   	font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
   	color: #FFAE36;
@@ -388,8 +372,23 @@ body {
 	}
 }
 
-@media only screen and (min-device-width: 1024px) {
+@media only screen and (min-width: 1024px) {
     /* tablets in landscape mode and smaller/older monitors */
+    #filmsList li:hover {
+	  background: #FFae36;
+	  border-top: 2px solid #014F95;
+	  border-left: 2px solid #014F95;
+	  border-right: 2px solid #014F95;
+	  border-radius: 5px;
+	}
+
+	#filmsList li:hover h3 {
+		color: #014F95;
+	}
+
+	#filmsList li:hover p {
+		color: #014F95;
+	}
 }
 
 

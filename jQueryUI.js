@@ -6,7 +6,7 @@ $('#menuButton').on('click touchstart', function(e){
 	if(menuOpen == false) {
 		menuOpen = true;
 		menu.style.display = "block";
-		$('#menuButton').text("Voltar");
+		$('#menuButton').text("Voltar a lista de filmes");
 		list.style.visibility = "hidden";
 	} else {
 		menuOpen = false;
