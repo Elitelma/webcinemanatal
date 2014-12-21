@@ -246,7 +246,7 @@ body {
 		background: #014470;
 		color: #FFAE36;
 		text-align: center;
-		font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
+		font: bold 36px/1.5 Helvetica, Verdana, sans-serif;
 	}
 
 	#menu {
@@ -260,7 +260,7 @@ body {
 	}
 
 	#menu .label {
-		font: bold 30px/1.5 Helvetica, Verdana, sans-serif;
+		font: bold 36px/1.5 Helvetica, Verdana, sans-serif;
 		text-align: left;
 		background: #FFAE36;
 		color: #014470;
@@ -277,7 +277,7 @@ body {
 	#menu li {
 		position: relative;
 		display: block;
-		font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
+		font: bold 30px/1.5 Helvetica, Verdana, sans-serif;
 	 	color: #FFAE36;
 	 	padding: 5px;
 	 	border: 1px solid #014470;
@@ -291,10 +291,7 @@ body {
 	}
 
 	#menu li:hover {
-		background: #FFAE36;
-		color: #014470;
-		border: 2px solid #014470;
-	  	cursor: pointer;
+		
 	}
 
 	#menu li ul {
@@ -351,6 +348,10 @@ body {
 	  	font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
 	  	color: #ffae36;
 	  	text-align: right;
+	}
+
+	#searchField {
+		font: bold 24px/1.5 Helvetica, Verdana, sans-serif;;
 	}
 }
 
