@@ -97,6 +97,22 @@ body {
   	border-bottom: 1px solid #FF9D15;
 }
 
+#filmsList li:hover {
+	  background: #FFae36;
+	  border-top: 2px solid #014F95;
+	  border-left: 2px solid #014F95;
+	  border-right: 2px solid #014F95;
+	  border-radius: 5px;
+}
+
+	#filmsList li:hover h3 {
+		color: #014F95;
+	}
+
+	#filmsList li:hover p {
+		color: #014F95;
+	}
+
 #filmsList h3 {
   	font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
   	color: #FFAE36;
@@ -290,6 +306,13 @@ body {
 		height: 600px;
 	}
 
+	#filmsList li {
+	  	padding: 10px;
+	  	overflow: auto;
+	  	background: #014470; /* For Safari 5.1 to 6.0 */
+	  	border-bottom: 1px solid #FF9D15;
+	}
+
 	#filmsList h3 {
   		font: bold 28px/1.5 Helvetica, Verdana, sans-serif;
   		color: #FFAE36;
@@ -367,27 +390,6 @@ body {
 
 @media only screen and (min-device-width: 1024px) {
     /* tablets in landscape mode and smaller/older monitors */
-    #filmsList li:hover {
-	  	background: #FFae36;
-	  	cursor: pointer;
-	  	opacity: 1;
-	    -webkit-transition: all 0.2s ease-in-out;
-	    -moz-transition: all 0.2s ease-in-out;
-	    -o-transition: all 0.2s ease-in-out;
-	    transition: all 0.2s ease-in-out;
-	  	border-top: 2px solid #014F95;
-	  	border-left: 2px solid #014F95;
-	  	border-right: 2px solid #014F95;
-	  	border-radius: 5px;
-	}
-
-	#filmsList li:hover h3 {
-		color: #014F95;
-	}
-
-	#filmsList li:hover p {
-		color: #014F95;
-	}
 }
 
 
