@@ -7,6 +7,10 @@ body {
 	background-image: url("d2awmPs.jpg");
 }
 
+#menuButton {
+	display: none;
+}
+
 #menu {
 	margin-right: auto;
 	margin-left: auto;
@@ -78,7 +82,7 @@ body {
 
 #generalElement ul {
 	list-style-type: none;
-  	height: 550px;
+  	height: 650px;
   	overflow: hidden;
   	overflow-y: scroll;
 }
@@ -234,12 +238,78 @@ body {
 }
 
 @media only screen and (max-device-width: 480px) {
+
+	#menuButton {
+		display: block;
+		padding: 10px;
+		margin: 10px;
+		background: #014470;
+		color: #FFAE36;
+		text-align: center;
+		font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
+	}
+
 	#menu {
+		display: none;
+		float: none;
+		padding-right: 3px;
+		list-style: none;
+		width: 400px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	#menu .label {
+		font: bold 30px/1.5 Helvetica, Verdana, sans-serif;
+		text-align: left;
+		background: #FFAE36;
+		color: #014470;
+		border: 2px solid #014470;
+		border-bottom: 0;
+	}
+
+	#menu .label:hover {
+		background: #FFAE36;
+		color: #014470;
+		cursor: default;
+	}
+
+	#menu li {
+		position: relative;
+		display: block;
+		font: bold 24px/1.5 Helvetica, Verdana, sans-serif;
+	 	color: #FFAE36;
+	 	padding: 5px;
+	 	border: 1px solid #014470;
+	 	border-bottom: 1px solid #FFAE36;
+	 	border-top: 0;
+	 	text-align: center;
+	 	background: -webkit-linear-gradient(#014F95, #014470); /* For Safari 5.1 to 6.0 */
+	  	background: -o-linear-gradient(#014F95, #014470); /* For Opera 11.1 to 12.0 */
+	  	background: -moz-linear-gradient(#014F95, #014470); /* For Firefox 3.6 to 15 */
+	  	background: linear-gradient(#014F95, #014470); /* Standard syntax */
+	}
+
+	#menu li:hover {
+		background: #FFAE36;
+		color: #014470;
+		border: 2px solid #014470;
+	  	cursor: pointer;
+	}
+
+	#menu li ul {
+		position: absolute;
+		left: 149px;
+		top: 0;
 		display: none;
 	}
 
+	#menu li:hover ul { 
+		display: block; 
+	}
+
 	#generalElement ul {
-		height: 480px;
+		height: 600px;
 	}
 
 	#filmsList h3 {
@@ -288,8 +358,29 @@ body {
     /* tablets in portrait mode */
 
     #generalElement ul {
-    	height: 860px;
+    	height: 850px;
     }
+}
+
+/* iPhone 6 */
+@media only screen and (max-device-height: 667px) {
+	#generalElement ul {
+		height: 1150px;
+	}
+}
+
+/* iPhone 5 */
+@media only screen and (max-device-height: 568px) {
+	#generalElement ul {
+		height: 1150px;
+	}
+}
+
+/* iPhone 4 */
+@media only screen and (max-device-height: 480px) {
+	#generalElement ul {
+		height: 900px;
+	}
 }
 
 @media only screen and (max-device-width: 1024px) {
