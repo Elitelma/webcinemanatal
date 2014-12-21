@@ -372,7 +372,7 @@ body {
 	}
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-device-width: 1024px) {
     /* tablets in landscape mode and smaller/older monitors */
     #filmsList li:hover {
 	  background: #FFae36;

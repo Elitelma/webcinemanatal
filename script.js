@@ -111,12 +111,16 @@ function generateFilms(search) {
 function showFilmsBySchedule() { 
 	if(showFilmsBy != "SCHEDULE" && !onInfo) {
 		showFilmsBy = "SCHEDULE";
+		document.getElementById("checkSchedule").checked = true;
+		document.getElementById("checkShopping").checked = false;
 		var htmlFilmsList = document.getElementById("filmsList");
 		deleteList(htmlFilmsList);
 		createList();
 		generateFilms();
 	} else if(showFilmsBy != "SCHEDULE") {
 		showFilmsBy = "SCHEDULE";
+		document.getElementById("checkSchedule").checked = false;
+		document.getElementById("checkShopping").checked = true;
 		deleteList(htmlFilmsList);
 		generateFilms();
 	}
@@ -125,12 +129,16 @@ function showFilmsBySchedule() {
 function showFilmsByShopping() {
 	if(showFilmsBy != "SHOPPING" && !onInfo) {
 		showFilmsBy = "SHOPPING";
+		document.getElementById("checkSchedule").checked = false;
+		document.getElementById("checkShopping").checked = true;
 		var htmlFilmsList = document.getElementById("filmsList");
 		deleteList(htmlFilmsList);
 		createList();
 		generateFilms();
 	} else if(showFilmsBy != "SHOPPING") {
 		showFilmsBy = "SHOPPING";
+		document.getElementById("checkSchedule").checked = true;
+		document.getElementById("checkShopping").checked = false;
 		deleteList(htmlFilmsList);
 		generateFilms();
 	}
